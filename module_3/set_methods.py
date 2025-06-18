@@ -9,3 +9,8 @@ print(my_set)
 
 
 
+#in/not in operator
+colors = {"green","red","blue"}
+color = "green"
+print(color in colors)
+print(color not in colors)
