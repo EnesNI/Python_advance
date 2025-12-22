@@ -1,10 +1,8 @@
 import sqlite3
 from models import Movie, MovieCreate
-from module_24.database import connection
-
 
 def create_connection():
-    connection = sqlite3.connect("movies_db")
+    connection = sqlite3.connect("movies.db")
     connection.row_factory = sqlite3.Row
     return connection
 
@@ -12,11 +10,11 @@ def create_table():
     connection = create_connection()
     cursor = connection.cursor()
     cursor.execute('''
-       create table if not exists movies(
-         id integer primary key autoincrement,
-         title text not null,
-         director text not null
-         )
+        create table if not exists movies(
+            id integer primary key autoincrement,
+            title text not null,
+            director text not null
+        )
     ''')
     connection.commit()
     connection.close()
@@ -49,19 +47,19 @@ def read_movie(movie_id: int):
     connection.close()
     if row is None:
         return None
-    return Movie(id=row['id'], title=row["title"], director = row["director"])
+    return Movie(id=row["id"], title=row["title"], director = row["director"])
 
-def uptade_movie(movie_id: int, movie: MovieCreate):
+def update_movie(movie_id: int, movie: MovieCreate) -> bool:
     connection = create_connection()
     cursor = connection.cursor()
-    cursor.execute("uptade movies set title = ?, director = ? where id = ?", (movie.title, movie.director, movie_id))
+    cursor.execute("update movies set title = ?, director = ? where id = ?", (movie.title, movie.director, movie_id))
     connection.commit()
-    uptade = cursor.rowcount
+    update = cursor.rowcount
     connection.close()
-    return uptade > 0
+    return update > 0
 
 def delete_movie(movie_id: int) -> bool:
-    connection = create.connection()
+    connection = create_connection()
     cursor = connection.cursor()
     cursor.execute("delete from movies where id = ?", (movie_id,))
 
