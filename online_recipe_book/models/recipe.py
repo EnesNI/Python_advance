@@ -1,5 +1,5 @@
- from pydantic import BaseModel
- from typing import Optional
+from pydantic import BaseModel
+from typing import Optional
 
 class RecipeBase (BaseModel):
     name: str
@@ -10,8 +10,8 @@ class RecipeBase (BaseModel):
     difficulty: str
     category_id: Optional [int] = None
 
-class RecipeCreate(RecipeBase): new
+class RecipeCreate(RecipeBase):
     pass
 
-class Recipe (RecipeBase): new*
+class Recipe (RecipeBase):
     id: int

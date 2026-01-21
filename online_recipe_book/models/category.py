@@ -1,7 +1,6 @@
-from pydentic import BaseModel
+from pydantic import BaseModel
 
-
-class Category Base(BaseModel):
+class CategoryBase(BaseModel):
     name: str
 
 class CategoryCreate(CategoryBase):
@@ -11,5 +10,5 @@ class CategoryResponse(BaseModel):
     id: int
     name: str
 
-Class category(CategoryBase):
+class Category(CategoryBase):
         id: int

@@ -1,14 +1,12 @@
-import sqlite3
 from typing import List
-from streamlit import status
 from models.category import Category, CategoryCreate
-from datebase import get_db_connection
+from database import get_db_connection
 from fastapi import APIRouter, HTTPException
-from unicodedata import category
+
 
 router = APIRouter()
 
-@router.get( path: '/categories/', response_model=List[Category])   new *
+@router.get( '/categories/', response_model=List[Category])
 def get_categories():
     conn = get_db_connection()
     cursor = conn.cusor()
@@ -20,7 +18,7 @@ def get_categories():
     category_list = [{'id': cat[0], 'name': cat[1]} for cat in categories]
     return category_list
 
-@router.post( path: '/categories/', response_model=Category)   new *
+@router.post('/categories/', response_model=Category)
 def create_category(category: CategoryCreate):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -36,17 +34,17 @@ def create_category(category: CategoryCreate):
             status_code=status.HTTP_409_CONFLICT,
             detail=f"The category '{category.name}' already exists."
         )
-    except sqlite3.IntegrityError:
+    except Exception as e:
         conn.close()
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred: {e}"
         )
     finally:
         conn.close()
 
 
-@router.put(path: */categories/{category_id}", response_model=Category)
+@router.put("/categories/{category_id}", response_model=Category)
 def update_category(category_id: int, category: CategoryCreate):
     conn = get_db_connection()
     cursor = conn.cusor()
@@ -58,7 +56,7 @@ def update_category(category_id: int, category: CategoryCreate):
     conn.close()
     return Category(id=category_id, name=category.name)
 
-@router.put(path: */categories/{category_id}", response_model=Category)
+@router.put("/categories/{category_id}", response_model=Category)
 def update_category(category_id: int):
     conn = get_db_connection()
     cursor = conn.cusor()
